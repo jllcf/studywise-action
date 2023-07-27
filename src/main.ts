@@ -17,9 +17,7 @@ async function run(): Promise<void> {
       ...repo,
       issue_number: pullRequestNumber ?? 1,
       body: 'Mensagem de teste!',
-      user: {
-        name: 'Techlead Study'
-      }
+      owner: 'Study'
     })
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
