@@ -16,7 +16,10 @@ async function run(): Promise<void> {
     await octokit.rest.issues.createComment({
       ...repo,
       issue_number: pullRequestNumber ?? 1,
-      body: 'Mensagem de teste!'
+      body: 'Mensagem de teste!',
+      user: {
+        name: 'Techlead Study'
+      }
     })
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
