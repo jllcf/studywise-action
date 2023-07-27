@@ -1,11 +1,25 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Study'
+description: 'Sou o Techlead da Studywise'
+author: 'Studywise'
 inputs:
-  milliseconds: # change this
+  json_file:
+    description: 'Where to find the json output of the benchmark'
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    default: 'output.json'
+  comparison_json_file:
+    description: 'Where to find the json output of an old benchmark for comparison. Empty for no comparison.'
+    required: false
+    default: ''
+  # Remember we used ain input which was not defined in the
+  # workflow file? It's because the default is already
+  # fine for us, so no need to change it.
+  # As described above, the github token is a token to
+  # interact with the GitHub REST API and is created for
+  # you from GitHub automatically.
+  token:
+    description: 'GitHub token'
+    default: $
+    required: true
 runs:
   using: 'node16'
   main: 'dist/index.js'
