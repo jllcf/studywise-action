@@ -1,16 +1,23 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import * as github from '@actions/github'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    if (github.context.eventName !== 'pull_request') {
+      core.info('This function Can only run on pull requests!')
+      return
+    }
+    const githubToken = core.getInput('token')
+    const context = github.context
+    const repo = context.repo
+    const pullRequestNumber = context.payload.pull_request?.number
+    const octokit = github.getOctokit(githubToken)
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
-
-    core.setOutput('time', new Date().toTimeString())
+    await octokit.rest.issues.createComment({
+      ...repo,
+      issue_number: pullRequestNumber ?? 1,
+      body: 'Mensagem de teste'
+    })
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
